@@ -12,10 +12,10 @@ Instructions to this assignment can be found [here](https://it3049c.github.io/co
 how many points out of 20 do you deserve on this assignment: 
 20 out of 20 points
 ## Self-Reflection:
-It was nice to continue working more with JS and learning, as well as implementing bootstrap :).
+Very cool to add dark mode and two buttons that work!
 
 ### How long it took me to finish this?
-2 Hours ~
+45 Minutes
 
 ## Discussion Questions:
 1. What does the bootstrap `display-4` class do?
