@@ -1,66 +1,35 @@
 const nameInput = document.getElementById("my-name-input");
 const myMessage = document.getElementById("my-message");
 const sendButton = document.getElementById("send-button");
-const saveButton = document.getElementById("save-button");
 const chatBox = document.getElementById("chat");
+
+
+
 const serverURL = `https://it3049c-chat-application.herokuapp.com/messages`;
 
-updateMessages();
-
-const MILLISECONDS_IN_TEN_SECONDS = 10000;
-setInterval(updateMessages, MILLISECONDS_IN_TEN_SECONDS);
-
-sendButton.addEventListener("click", function(sendButtonClickEvent) {
-  
-  sendButtonClickEvent.preventDefault();
-  const sender = nameInput.value;
-  const message = myMessage.value;
-
-  sendMessages(sender,message);
-  myMessage.value = "";
-
-});
-
-saveButton.addEventListener("click", function(saveButtonClickEvent) {
-    saveButtonClickEvent.preventDefault();
-
-    if(nameInput.value != ""){
-        myMessage.removeAttribute("disabled");
-    }
-    else {
-        myMessage.setAttribute("disabled", "disabled");
-    }
-    
-    localStorage.setItem("name", nameInput.value);
-});
-
-function updateMessagesInChatBox(){
-
-  updateMessages();
-
-}
-
-
 function fetchMessages() {
-
     return fetch(serverURL)
-        .then( response => response.json());
-
+        .then( response => response.json())
 }
 
-async function updateMessages(){
 
+async function updateMessages() {
+  // Fetch Messages
   const messages = await fetchMessages();
 
-  let formattedMessages = "";
-
-  messages.forEach(message => {
-      formattedMessages += formatMessage(message, nameInput.value);
-  });
-
-  chatBox.innerHTML = formattedMessages;
-
+  // Loop over the messages. Inside the loop we will
+      // get each message
+      // format it
+      // add it to the chatbox
+      
+      let formattedMessages = "";
+      messages.forEach((message) => {
+        formattedMessages += formatMessage(message, nameInput.value);
+      });
+      chatBox.innerHTML = formattedMessages;
+      console.log(messages);
 }
+
 
 function formatMessage(message, myNameInput) {
   const time = new Date(message.timestamp);
@@ -91,12 +60,29 @@ function formatMessage(message, myNameInput) {
   }
 }
 
+async function updateMessages() {
+  // Fetch Messages
+  const messages = await fetchMessages();
+  // Loop over the messages. Inside the loop we will:
+      // get each message
+      // format it
+      // add it to the chatbox
+  let formattedMessages = "";
+  messages.forEach(message => {
+      formattedMessages += formatMessage(message, nameInput.value);
+  });
+  chatBox.innerHTML = formattedMessages;
+}
+updateMessages()
+
+const MILLISECONDS_IN_TEN_SECONDS = 10000;
+setInterval(updateMessages, MILLISECONDS_IN_TEN_SECONDS);
 function sendMessages(username, text) {
   const newMessage = {
       sender: username,
       text: text,
       timestamp: new Date()
-  };
+  }
 
   fetch (serverURL, {
       method: `POST`, 
@@ -106,3 +92,24 @@ function sendMessages(username, text) {
       body: JSON.stringify(newMessage)
   });
 }
+
+sendButton.addEventListener("click", function(sendButtonClickEvent) {
+  sendButtonClickEvent.preventDefault();
+  const sender = nameInput.value;
+  const message = myMessage.value;
+
+  sendMessages(sender,message);
+  myMessage.value = "";
+});
+
+save.onclick = function () {
+  localStorage.setItem("my-name-input", nameInput.value);
+  nameInput.value = "";
+  document.getElementById("my-message").disabled = false;
+}
+
+edit.onclick = function () {
+  const text = localStorage.getItem("my-name-input")
+  nameInput.value = text;
+}
+
