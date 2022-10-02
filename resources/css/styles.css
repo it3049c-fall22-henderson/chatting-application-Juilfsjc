@@ -16,6 +16,11 @@ header,
     background: #e9ecef;
 }
 
+.darkMode{
+  background: black;
+  
+}
+
 .jumbotron {
     margin-bottom:0;
 }
